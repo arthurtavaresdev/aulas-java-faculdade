@@ -10,9 +10,7 @@ import javax.persistence.Persistence;
 
 class Main {
     public static void main(String[] args) {
-        
-        EntityManagerFactory emf = Persistence.createEntityManagerFactory("NewSuppliesCompanyPU"); 
-        EntityManager em = emf.createEntityManager();
+        EntityManager em = PersistenceService.getEntityManager();
         
         em.getTransaction().begin();
         
@@ -57,8 +55,7 @@ class Main {
         **/
         
         em.close();
-        emf.close();
-        
+        /**
         try {
             GeradorArquivo file = new GeradorArquivoXML();
             file.gerar("exemplo.xml", p);
@@ -74,6 +71,7 @@ class Main {
         }catch(IOException e) {
             e.printStackTrace();
         }
+        * **/
     }
 }
 

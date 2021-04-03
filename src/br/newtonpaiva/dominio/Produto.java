@@ -1,15 +1,20 @@
 package br.newtonpaiva.dominio;
 
+import br.newtonpaiva.PersistenceService;
+import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Persistence;
 
 @Entity
 public class Produto {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-   
     private Integer id;
     
     private String nome;
@@ -39,8 +44,8 @@ public class Produto {
         return nome;
     }
 
-    public String setNome(String nome){
-        return nome;
+    public void setNome(String nome){
+        this.nome = nome;
     }
 
     public Double getPreco() {
@@ -57,5 +62,10 @@ public class Produto {
 
     public void setDescricao(String descricao) {
         this.descricao = descricao;
+    }
+    
+    public static List<Produto> findByNome(String nome) {
+        return PersistenceService.getEntityManager().createQuery("SELECT produto FROM Produto produto WHERE produto.nome LIKE :nome", Produto.class)
+                .setParameter("nome", nome).getResultList();
     }
 }
