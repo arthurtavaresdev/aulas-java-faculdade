@@ -31,17 +31,19 @@ class Main {
         
         Produto p1 = new Produto();
         p1.setNome("Mouse com fio");
+        p1.setEstoque(10);
         p1.setPreco(143.99);
 
         Produto p2 = new Produto();
         p2.setNome("Notebook Dell Maneiro");
+        p1.setEstoque(20);
         p2.setPreco(3543.99);
                                            
 
 
         c1.getProdutos().add(p1);
         c1.getProdutos().add(p2);
-        /**
+        
         Cliente c = new Cliente();
         c.setNome("Tarley");
         Pedido p = new PedidoBuilder()
@@ -52,10 +54,9 @@ class Main {
                         "MG", "Contagem", "Cabral", "32.155-054", "Rua dos bobos", "1987"
                 ))
                 .getResultado();
-        **/
         
         em.close();
-        /**
+      
         try {
             GeradorArquivo file = new GeradorArquivoXML();
             file.gerar("exemplo.xml", p);
@@ -71,7 +72,6 @@ class Main {
         }catch(IOException e) {
             e.printStackTrace();
         }
-        * **/
     }
 }
 

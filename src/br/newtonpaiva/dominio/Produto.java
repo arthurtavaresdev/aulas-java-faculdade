@@ -2,6 +2,7 @@ package br.newtonpaiva.dominio;
 
 import br.newtonpaiva.PersistenceService;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -17,10 +18,13 @@ public class Produto {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
     
+    @Column(nullable  = false, unique = true)
     private String nome;
+    
     private Double preco;
     private String descricao;
     private Categoria categoria;
+    private Integer estoque;
 
     public Integer getId() {
         return id;
@@ -30,7 +34,21 @@ public class Produto {
         this.id = id;
     }
     
+    public void setEstoque(Integer estoque){
+        this.estoque = estoque;
+    }
     
+    public Integer getEstoque(){
+        return this.estoque;
+    }
+    
+    public void incrementarEstoque(){
+        this.estoque++;
+    }
+    
+    public void diminuirEstoque(){
+        this.estoque--;
+    }
 
     public Categoria getCategoria() {
         return categoria;
@@ -67,5 +85,19 @@ public class Produto {
     public static List<Produto> findByNome(String nome) {
         return PersistenceService.getEntityManager().createQuery("SELECT produto FROM Produto produto WHERE produto.nome LIKE :nome", Produto.class)
                 .setParameter("nome", nome).getResultList();
+    }
+    
+    public Boolean validate(){
+        List<Produto> produtos = findByNome(this.nome);
+        return produtos.isEmpty();
+    }
+    
+    public Produto save() throws Exception {
+        if(!this.validate()){
+            throw new Exception("Produto invalido");
+        }
+      
+        PersistenceService.getEntityManager().persist(this);
+        return this;
     }
 }
