@@ -15,7 +15,8 @@ public class PedidoBuilder {
         i.setProduto(p);
         i.setQuantidade(qtd);
         i.setPreco(p.getPreco());
-
+        
+        
         itens.add(i);
 
         return this;
