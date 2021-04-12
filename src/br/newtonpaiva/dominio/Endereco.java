@@ -1,6 +1,19 @@
 package br.newtonpaiva.dominio;
 
+import br.newtonpaiva.PersistenceService;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToOne;
+
+@Entity
 public class Endereco {
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Integer id;
+     
     private String uf;
     private String cidade;
     private String bairro;
@@ -8,8 +21,14 @@ public class Endereco {
     private String logradouro;
     private String numero;
     private String complemento;
+    
+    @ManyToOne
+    private Cliente cliente;
+    
+    public Endereco() {
+    }
 
-    public Endereco(String uf, String cidade, String bairro, String cep, String logradouro, String numero, String complemento) {
+    public Endereco(String uf, String cidade, String bairro, String cep, String logradouro, String numero, String complemento, Cliente cliente) {
         this.uf = uf;
         this.cidade = cidade;
         this.bairro = bairro;
@@ -17,10 +36,23 @@ public class Endereco {
         this.logradouro = logradouro;
         this.numero = numero;
         this.complemento = complemento;
+        this.cliente = cliente;
+    }
+    
+    public Endereco(String uf, String cidade, String bairro, String cep, String logradouro, String numero, Cliente cliente) {
+        this(uf, cidade, bairro, cep, logradouro, numero, null, cliente);
     }
 
     public Endereco(String uf, String cidade, String bairro, String cep, String logradouro, String numero) {
-        this(uf, cidade, bairro, cep, logradouro, numero, null);
+        this(uf, cidade, bairro, cep, logradouro, numero, null, null);
+    }
+    
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
     }
 
     public String getUf() {
@@ -77,5 +109,13 @@ public class Endereco {
 
     public void setComplemento(String complemento) {
         this.complemento = complemento;
+    }
+    
+    public Cliente getCliente() {
+        return cliente;
+    }
+    
+    public void setCliente(Cliente cliente) {
+        this.cliente = cliente;
     }
 }
