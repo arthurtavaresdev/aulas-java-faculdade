@@ -3,12 +3,14 @@ package br.newtonpaiva.dominio;
 import java.util.List;
 import java.util.ArrayList;
 import br.newtonpaiva.dominio.frete.*;
+import br.newtonpaiva.dominio.icms.IcmsMG;
 
 public class PedidoBuilder {
     private List<ItemPedido> itens = new ArrayList<>();
     private Cliente cliente;
     private Endereco enderecoEntrega;
     private Frete calculoFrete;
+    private ICMS calculoIcms;
 
     public PedidoBuilder addProduto(Produto p, Integer qtd) {
         ItemPedido i = new ItemPedido();
@@ -34,6 +36,7 @@ public class PedidoBuilder {
         switch(e.getUf()) {
             case "MG":
                 setFrete(new FreteMg());
+                setIcms(new IcmsMG());
                 break;
             case "RJ":
                 setFrete(new FreteRJ());
@@ -53,6 +56,11 @@ public class PedidoBuilder {
 
         return this;
     }
+    
+    private PedidoBuilder setIcms(ICMS icms) {
+        this.calculoIcms = icms;
+        return this;
+    }
 
     public Pedido getResultado() {
         Pedido p = new Pedido(999999);
@@ -60,7 +68,7 @@ public class PedidoBuilder {
         p.setCliente(cliente);
         p.setItens(itens);
         p.setCalculoFrete(calculoFrete);
-
+        p.setCalculoICMS(calculoIcms);
         return p;
     }
 }

@@ -5,6 +5,7 @@
  */
 package br.newtonpaiva.dominio;
 
+import junit.framework.Assert;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Before;
@@ -43,7 +44,7 @@ public class PedidoTest {
     //a soma do preço dos itens do pedido, somando o frete mais o icms.
     
     @Test
-    public void testValidarObterTotal() {
+    public void testValidarObterTotalIgualASomaDosItens() {
         Produto p1 = new Produto();
         p1.setNome("Teclado");
         p1.setPreco(500.0);
@@ -56,7 +57,12 @@ public class PedidoTest {
                 .setEnderecoEntrega(new Endereco(
                         "MG", "Contagem", "Europa", "32.155-054", "Rua teste", "1987"
                 )).getResultado();
-        Double total = p.obterTotal();
+        
+        Double totalPedido = p.obterTotal();
+        double totalItens = p.getItens().stream()
+                .map(item -> item.obterTotal() * p.getCalculoICMS().getImposto() + p.getCalculoFrete().getFrete())
+                .reduce((a, b) -> a + b).orElse(0.0);
+        Assert.assertEquals(totalPedido, totalItens);
         
     }
     
