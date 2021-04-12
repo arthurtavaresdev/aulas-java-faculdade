@@ -54,8 +54,18 @@ public class ProdutoTest {
         } catch (Exception ex) {
             Logger.getLogger(ProdutoTest.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-      
+        
+        try {
+            Cliente cliente = new Cliente();
+            cliente.setNome("Caio Avelar");
+            cliente.setTelefone("3170707070");
+            cliente.setEmail("caio@a.com");
+            cliente.getEnderecos().add(new Endereco("MG", "Belo Horizonte", "Serra", "30000000", "Rua dos Bobos", "0", cliente));
+            cliente.save();
+        } catch (Exception ex) {
+            Logger.getLogger(ProdutoTest.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
         em.getTransaction().commit();
     }
     
@@ -137,17 +147,13 @@ public class ProdutoTest {
     
     // 4 Consultar clientes a partir de uma uf
     // Criar os casos de Teste para contar se os clientes retornados são realmente da uf
-    
-    
+    @Test
+    public void testConsultarClienteUF() {
+        String uf = "MG";
+        List<Cliente> clientes = Cliente.findAllByUf(uf);
+        boolean allClientsAreFromUf = clientes.stream()
+                .allMatch(cliente -> cliente.getEnderecos().stream().allMatch(endereco -> uf.equals(endereco.getUf())));
+        Assert.assertTrue(allClientsAreFromUf);
+    }
 
-    // 5 - Criar testes para validar o método obterTotal()
-    //Cenário de Sucesso conforme a regra onde o total é igual a soma do preço dos itens do pedido, somando o frete mais o icms.
-       
-    
-
-    // TODO add test methods here.
-    // The methods must be annotated with annotation @Test. For example:
-    //
-    // @Test
-    // public void hello() {}
 }
